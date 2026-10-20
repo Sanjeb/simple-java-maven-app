@@ -1,0 +1,22 @@
+# Triggers the pipeline on commits to the main branch
+trigger:
+- main
+
+# Specifies the agent pool environment
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Task to build and package a Maven project
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean package'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.17'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
